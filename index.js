@@ -8,7 +8,7 @@ const apiPaths = {
     fetchAllCategories: `${apiEndpoint}/genre/movie/list?api_key=${apikey}`,
     fetchMoviesList: (id) => `${apiEndpoint}/discover/movie?api_key=${apikey}&with_genres=${id}`,
     fetchTrending:`${apiEndpoint}/trending/all/day?api_key=${apikey}&language=en-US`,
-    searchOnYoutube: (query) => `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=AIzaSyC0SZJkHFX-fQ7NrsxdI4l4mGwYuY4l7P8`
+    searchOnYoutube: (query) => `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=AIzaSyBUECysApSssdoi4DMD8lT41TgMz8mr92g`
 }
 
 
@@ -37,7 +37,7 @@ function buildBannerSection(movie){
 
     div.innerHTML = `
             <h2 class="banner__title">${movie.title}</h2>
-            <p class="banner__info">Trending in movies | Released - ${movie.release_date} </p>
+            <p class="banner__info">Trending in movies </p> <!--| Released - ${movie.release_date} -->
             <p class="banner__overview">${movie.overview && movie.overview.length > 200 ? movie.overview.slice(0,200).trim()+ '...':movie.overview}</p>
             <div class="action-buttons-cont">
                 <button class="action-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="Hawkins-Icon Hawkins-Icon-Standard"><path d="M4 2.69127C4 1.93067 4.81547 1.44851 5.48192 1.81506L22.4069 11.1238C23.0977 11.5037 23.0977 12.4963 22.4069 12.8762L5.48192 22.1849C4.81546 22.5515 4 22.0693 4 21.3087V2.69127Z" fill="currentColor"></path></svg> &nbsp;&nbsp; Play</button>
@@ -76,7 +76,7 @@ function fetchAndbuildMovieSection(fetchUrl, categoryName){
         // console.table(res.results);
         const movies = res.results;
         if (Array.isArray(movies) && movies.length) {
-            buildMoviesSection(movies.slice(0,6), categoryName);
+            buildMoviesSection(movies.slice(0,7), categoryName);
         }
         return movies;
     })
@@ -91,7 +91,7 @@ function buildMoviesSection(list, categoryName){
     const moviesListHTML = list.map(item => {
         return `
         <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title}', 'yt${item.id}')">
-            <img class="move-item-img" src="${imgPath}${item.backdrop_path}" alt="${item.title}" />
+            <img class="movie-item-img" src="${imgPath}${item.backdrop_path}" alt="${item.title}" />
             <div class="iframe-wrap" id="yt${item.id}"></div>
         </div>`;
     }).join('');
@@ -123,7 +123,7 @@ function searchMovieTrailer(movieName, iframId) {
         console.log(elements, iframId);
 
         const div = document.createElement('div');
-        div.innerHTML = `<iframe width="245px" height="150px" src="https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1&controls=0"></iframe>`
+        div.innerHTML = `<iframe width="270px" height="160px" style="border-radius: 8px;" src="https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1&controls=0"></iframe>`
 
         elements.append(div);
         
