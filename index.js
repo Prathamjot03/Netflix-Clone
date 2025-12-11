@@ -1,4 +1,4 @@
-// Consts
+
 const apikey = "761041829dd8517757f83028a0f07937";
 const apiEndpoint = "https://api.themoviedb.org/3"
 const imgPath = "https://image.tmdb.org/t/p/original";
@@ -30,13 +30,14 @@ function fetchTrendingMovies(){
 
 function buildBannerSection(movie){
     const bannerCont = document.getElementById('banner-section');
-    
+    // console.log(movie.title);
+    // console.log(movie.name);
     bannerCont.style.backgroundImage = `url('${imgPath}${movie.backdrop_path}')`;
 
     const div = document.createElement('div');
 
     div.innerHTML = `
-            <h2 class="banner__title">${movie.title}</h2>
+            <h2 class="banner__title">${movie.name || movie.title}</h2>
             <p class="banner__info">Trending in movies </p> <!--| Released - ${movie.release_date} -->
             <p class="banner__overview">${movie.overview && movie.overview.length > 200 ? movie.overview.slice(0,200).trim()+ '...':movie.overview}</p>
             <div class="action-buttons-cont">
@@ -89,9 +90,10 @@ function buildMoviesSection(list, categoryName){
     const moviesCont = document.getElementById('movies-cont');
     
     const moviesListHTML = list.map(item => {
+        // console.log(item);
         return `
-        <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title}', 'yt${item.id}')">
-            <img class="movie-item-img" src="${imgPath}${item.backdrop_path}" alt="${item.title}" />
+        <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title || item.name}', 'yt${item.id}')">
+            <img class="movie-item-img" src="${imgPath}${item.poster_path}" alt="${item.title}" />
             <div class="iframe-wrap" id="yt${item.id}"></div>
         </div>`;
     }).join('');
@@ -123,7 +125,7 @@ function searchMovieTrailer(movieName, iframId) {
         console.log(elements, iframId);
 
         const div = document.createElement('div');
-        div.innerHTML = `<iframe width="270px" height="160px" style="border-radius: 8px;" src="https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1&controls=0"></iframe>`
+        div.innerHTML = `<iframe width="200px" height="350px" style="border-radius: 8px;" src="https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1&controls=0"></iframe>`
 
         elements.append(div);
         
